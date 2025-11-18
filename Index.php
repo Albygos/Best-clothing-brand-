@@ -2,7 +2,7 @@
 ini_set('max_execution_time', '600');
 ini_set('memory_limit', '512M');
 
-$keywords = array_map('str_getcsv', file('keywords.csv'));
+$keywords = array_map('str_getcsv', file('luxeloom_49999_keywords.csv'));
 $headers = array_shift($keywords);
 
 foreach ($keywords as $row) {
