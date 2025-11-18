@@ -1,31 +1,20 @@
-RewriteEngine On
+FROM php:8.2-apache
 
-# 🚫 1) Do NOT force HTTPS - Render already handles it
+# Enable rewrite (needed later, but harmless now)
+RUN a2enmod rewrite
 
-# 🚫 2) Do NOT redirect "/" or index.php
+# Set working dir
+WORKDIR /var/www/html
 
-############################################
-# 3️⃣ Allow direct loading of sitemap & robots
-############################################
-RewriteRule ^sitemap\.xml$ sitemap.xml [L]
-RewriteRule ^robots\.txt$ robots.txt [L]
+# Copy project files
+COPY . /var/www/html
 
-############################################
-# 4️⃣ Remove .php from URLs but ONLY if file exists
-############################################
-RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.+?)/?$ $1.php [L]
+# Make sure Apache user owns the files
+RUN chown -R www-data:www-data /var/www/html
 
-############################################
-# 5️⃣ Block sensitive system folders
-############################################
-RedirectMatch 403 ^/(config|admin|includes|private|cgi-bin|scripts|vendor)/
+# Allow .htaccess to work in the document root
+RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-############################################
-# 6️⃣ Allow Google to load JS, CSS, and Images
-############################################
-<IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|webp)$">
-    Header set Access-Control-Allow-Origin "*"
-  </FilesMatch>
-</IfModule>
+EXPOSE 80
+
+CMD ["apache2-foreground"]
