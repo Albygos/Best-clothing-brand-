@@ -1,31 +1,16 @@
-RewriteEngine On
+<?php
+$dir = "pages/";
+$files = scandir($dir);
+$sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
+$sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-# 🚫 1) Do NOT force HTTPS - Render already handles it
+foreach ($files as $file) {
+    if ($file == '.' || $file == '..') continue;
+    $url = "https://best-clothing-brand.onrender.com" . urlencode($file);
+    $sitemap .= "<url><loc>$url</loc><priority>0.80</priority></url>";
+}
 
-# 🚫 2) Do NOT redirect "/" or index.php
-
-############################################
-# 3️⃣ Allow direct loading of sitemap & robots
-############################################
-RewriteRule ^sitemap\.xml$ sitemap.xml [L]
-RewriteRule ^robots\.txt$ robots.txt [L]
-
-############################################
-# 4️⃣ Remove .php from URLs but ONLY if file exists
-############################################
-RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.+?)/?$ $1.php [L]
-
-############################################
-# 5️⃣ Block sensitive system folders
-############################################
-RedirectMatch 403 ^/(config|admin|includes|private|cgi-bin|scripts|vendor)/
-
-############################################
-# 6️⃣ Allow Google to load JS, CSS, and Images
-############################################
-<IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|webp)$">
-    Header set Access-Control-Allow-Origin "*"
-  </FilesMatch>
-</IfModule>
+$sitemap .= "</urlset>";
+file_put_contents("sitemap.xml", $sitemap);
+echo "Sitemap Created Successfully!";
+?>
