@@ -1,0 +1,39 @@
+User-agent: *
+
+# Allow crawling of all main content
+Allow: /$
+Allow: /pages/
+Allow: /assets/
+Allow: /collections/
+Allow: /products/
+Allow: /blog/
+
+# Block system and sensitive folders
+Disallow: /admin/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /cgi-bin/
+Disallow: /scripts/
+Disallow: /temp/
+Disallow: /cart/
+Disallow: /checkout/
+
+# Crawl-delay for slow hosting (optional, remove if cloud hosted)
+# Crawl-delay: 2
+
+# Allow Google ads and analytics files
+Allow: /ads.txt
+Allow: /gtag/
+Allow: /js/
+Allow: /css/
+Allow: /images/
+
+# Prevent search pages and duplicate query URLs
+Disallow: /search?
+Disallow: /*?filter=*
+Disallow: /*sort=*
+Disallow: /*?page=*
+Disallow: /*&utm_source=*
+
+# Sitemap for faster indexing
+Sitemap: https://luxeloom.in/sitemap.xml
