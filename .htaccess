@@ -1,0 +1,48 @@
+RewriteEngine On
+
+#############################
+# 1️⃣ Force HTTPS (SEO safe)
+#############################
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+#######################################
+# 2️⃣ Remove trailing slashes (optional)
+#######################################
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+#############################################
+# 3️⃣ Redirect all sitemap requests correctly
+#############################################
+RewriteRule ^sitemap/?$ /sitemap.xml [L,R=301]
+RewriteRule ^sitemap.xml$ /sitemap/sitemap.xml [L]
+RewriteRule ^sitemap-(.*)\.xml$ /sitemap/sitemap-$1.xml [L]
+
+##############################################
+# 4️⃣ Ensure robots.txt is always served direct
+##############################################
+<Files "robots.txt">
+    Header set Content-Type text/plain
+</Files>
+
+##############################################
+# 5️⃣ Remove .php extension (SEO friendly URLs)
+##############################################
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+########################################################
+# 6️⃣ Block sensitive folders from public access
+########################################################
+RedirectMatch 403 ^/(config|admin|includes|private|cgi-bin)/
+
+########################################################
+# 7️⃣ Allow Google to crawl CSS, JS, images (important!)
+########################################################
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
