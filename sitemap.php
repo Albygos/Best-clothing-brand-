@@ -1,35 +1,31 @@
 RewriteEngine On
 
-####################################
-# 1️⃣ Remove HTTPS redirect (Render auto handles)
-####################################
+# 🚫 1) Do NOT force HTTPS - Render already handles it
 
-####################################
-# 2️⃣ Remove trailing slash (Optional)
-####################################
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)/$ /$1 [L,R=301]
+# 🚫 2) Do NOT redirect "/" or index.php
 
-#############################################
-# 3️⃣ Redirect sitemap and XML files properly
-#############################################
-RewriteRule ^sitemap/?$ /sitemap.xml [L,R=301]
+############################################
+# 3️⃣ Allow direct loading of sitemap & robots
+############################################
+RewriteRule ^sitemap\.xml$ sitemap.xml [L]
+RewriteRule ^robots\.txt$ robots.txt [L]
 
-#############################################
-# 4️⃣ Remove .php extension
-#############################################
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^\.]+)$ $1.php [NC,L]
+############################################
+# 4️⃣ Remove .php from URLs but ONLY if file exists
+############################################
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L]
 
-#############################################
-# 5️⃣ Protect sensitive folders
-#############################################
-RedirectMatch 403 ^/(config|admin|includes|cgi-bin|scripts)/
+############################################
+# 5️⃣ Block sensitive system folders
+############################################
+RedirectMatch 403 ^/(config|admin|includes|private|cgi-bin|scripts|vendor)/
 
-#############################################
-# 6️⃣ Optional - enable headers if module exists
-#############################################
+############################################
+# 6️⃣ Allow Google to load JS, CSS, and Images
+############################################
 <IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|webp)$">
     Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
 </IfModule>
