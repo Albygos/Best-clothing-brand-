@@ -31,7 +31,7 @@ echo "<h3></h3>";
 <head>
     <title>{{title}} | LuxeLoom Fashion India</title>
     <meta name="description" content="{{description}} Shop premium {{category}} for women in {{location}} with free shipping.">
-    <link rel="canonical" href="https://luxeloom.in/{{keyword}}">
+    <link rel="canonical" href="https://best-clothing-brand.onrender.com">
     <meta charset="UTF-8">
 </head>
 
