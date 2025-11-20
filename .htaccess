@@ -1,20 +1,17 @@
-FROM php:8.2-apache
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+RewriteEngine On
 
-# Enable rewrite (needed later, but harmless now)
-RUN a2enmod rewrite
+# Redirect all requests to index.php (for PHP websites)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+</IfModule>
 
-# Set working dir
-WORKDIR /var/www/html
+# Basic security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
 
-# Copy project files
-COPY . /var/www/html
-
-# Make sure Apache user owns the files
-RUN chown -R www-data:www-data /var/www/html
-
-# Allow .htaccess to work in the document root
-RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-
-EXPOSE 80
-
-CMD ["apache2-foreground"]
+# Disable directory listing
+Options -Indexes
