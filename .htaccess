@@ -1,41 +1,42 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-# 📌 Force HTTPS (Render & Proxy support)
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# =============================
-# 🔁 Sitemap Handling (Safe for SEO)
-# =============================
-
-# Allow direct access to sitemap.php (no redirect)
-RewriteRule ^sitemap\.php$ - [L]
-
-# Redirect /sitemap.xml → /sitemap.php
-RewriteRule ^sitemap\.xml$ /sitemap.php [L,QSA]
-
-# Redirect /sitemap → /sitemap.php
-RewriteRule ^sitemap$ /sitemap.php [L,QSA]
-
-# Allow Googlebot, Bingbot, AdsBot to access sitemap.php without redirect
-RewriteCond %{HTTP_USER_AGENT} (googlebot|bingbot|duckduckbot|adsbot-google) [NC]
-RewriteRule ^sitemap\.php$ - [L]
-
-# =================================
-# 🚨 Cloaking / Landing Page Redirect Protection
-# (Make sure sitemap is NEVER redirected to index.php)
-# =================================
-RewriteCond %{REQUEST_URI} ^/sitemap\.php$ [NC]
+# ==================================================
+# 🚫 Completely bypass sitemap.php AND sitemap.xml from ANY redirect or routing
+# ==================================================
+RewriteCond %{REQUEST_URI} ^/sitemap\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/sitemap\.xml$
 RewriteRule .* - [L]
 
-# =============================
-# 📂 Normal Routing
-# =============================
-# Route all non-existing files to index.php
+# ==================================================
+# 🌐 Force HTTPS (Render & Proxy support)
+# ==================================================
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{REQUEST_URI} !^/sitemap(\.php|\.xml)$
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ==================================================
+# 🔁 Route /sitemap and /sitemap.xml to sitemap.php
+# ==================================================
+RewriteRule ^sitemap$ /sitemap.php [L,QSA]
+RewriteRule ^sitemap\.xml$ /sitemap.php [L,QSA]
+
+# ==================================================
+# 🛡 EXCLUDE Googlebot, Bingbot, AdsBot from ANY redirect
+# ==================================================
+RewriteCond %{HTTP_USER_AGENT} (googlebot|bingbot|duckduckbot|adsbot-google) [NC]
+RewriteCond %{REQUEST_URI} ^/sitemap\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/sitemap\.xml$
+RewriteRule .* - [L]
+
+# ==================================================
+# 📂 Normal Routing — EXCLUDES sitemap first!
+# ==================================================
+RewriteCond %{REQUEST_URI} !(^/sitemap(\.php|\.xml)?$)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
+
 </IfModule>
 
 # ===================================================
@@ -47,5 +48,4 @@ Header always set X-Content-Type-Options nosniff
 Header always set X-XSS-Protection "1; mode=block"
 </IfModule>
 
-# 🚫 Disable directory listing
 Options -Indexes
