@@ -75,6 +75,7 @@ echo <<<HTML
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+ <meta name="google-site-verification" content="tWKZMQY2_KCE2RYYxnAvs6RGihOwC9YC9bPordzZAN4" />   
 <title><?php echo $keyword; ?></title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
