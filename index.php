@@ -68,7 +68,7 @@ foreach ($googleBots as $bot) {
 }
 
 if ($isBot) {
-
+header("Content-Type: text/html; charset=UTF-8");
 echo <<<HTML
 <!DOCTYPE html>
 
@@ -76,7 +76,7 @@ echo <<<HTML
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
  <meta name="google-site-verification" content="tWKZMQY2_KCE2RYYxnAvs6RGihOwC9YC9bPordzZAN4" />   
-<title><?php echo htmlspecialchars($keyword); ?></title>
+<title>$keyword</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
@@ -164,7 +164,7 @@ echo <<<HTML
 <div class="@[480px]:p-4">
 <div class="flex min-h-[60vh] md:min-h-[70vh] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 rounded-xl items-center justify-center p-6 text-center" data-alt="A model wearing an elegant, flowing green kurtha in a serene, sunlit garden setting." style='background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhArJPfCx3G4sySwrnbfaIhynz6dLKeC0805YDNGJYeg2DLlFa1x4fpJFNuZSm8cnHVlxNlLbaWzN-Y3t3WhBuzP6UAwytohtThupM_ZUxFd2ZkHLmnPxAYp3qcFLR0A-Lk0ouAHoX-iJsje8UYhvtT4KP8awyb2EWX3m4ESmU4q_JIzah9nw6Oos9EBVi_e9Nzb15PSGtvrYMzJYIZB8bmw7CG3e2GCQOH9IRVdsQrA77vBYAZiq2KRjUyw-OFTxAQKou-KgEjMs");'>
 <div class="flex flex-col gap-4 max-w-2xl">
-<h1 class="text-white text-4xl font-black leading-tight tracking-tighter @[480px]:text-5xl @[768px]:text-6xl"><?php echo htmlspecialchars($keyword); ?></h1>
+<h1 class="text-white text-4xl font-black leading-tight tracking-tighter @[480px]:text-5xl @[768px]:text-6xl">$keyword</h1>
 <h2 class="text-white/90 text-base font-normal leading-normal @[480px]:text-lg">Discover our exclusive collection of handcrafted kurthas, designed for the contemporary woman.</h2>
 </div>
 <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-all shadow-lg">
