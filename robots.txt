@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://best-clothing-brand.onrender.com/sitemap (7).xml
+Sitemap: https://best-clothing-brand.onrender.com/sitemap.xml
