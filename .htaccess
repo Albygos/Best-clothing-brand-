@@ -1,17 +1,23 @@
-# Enable Rewrite Engine
+# Enable rewriting
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-# Redirect all requests to index.php (for PHP websites)
+# Force HTTPS (optional)
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Route non-file requests to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
 </IfModule>
 
-# Basic security headers
-Header set X-Content-Type-Options "nosniff"
-Header set X-Frame-Options "SAMEORIGIN"
-Header set X-XSS-Protection "1; mode=block"
+# Security headers (safe to include)
+<IfModule mod_headers.c>
+Header always set X-Frame-Options SAMEORIGIN
+Header always set X-Content-Type-Options nosniff
+Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
 
 # Disable directory listing
 Options -Indexes
