@@ -1,38 +1,31 @@
 <?php
 // =========================================================
-// ✅ HARD BYPASS FOR SITEMAP (ABSOLUTELY REQUIRED)
+// ✅ HARD BYPASS FOR SITEMAP — ONLY OUTPUT sitemap.php
 // =========================================================
 if (
     isset($_SERVER['REQUEST_URI']) &&
-    (strpos($_SERVER['REQUEST_URI'], 'sitemap.xml') !== false)
+    strpos($_SERVER['REQUEST_URI'], 'sitemap.php') !== false
 ) {
     header("Content-Type: application/xml; charset=UTF-8");
 
-    $urls = [
-        "https://best-clothing-brand.onrender.com/",
-        "https://best-clothing-brand.onrender.com/about",
-        "https://best-clothing-brand.onrender.com/contact",
-        "https://best-clothing-brand.onrender.com/shop"
-    ];
-
+    // Include ONLY sitemap.php URL
+    $domain = "https://best-clothing-brand.onrender.com/";
     $today = date('Y-m-d');
 
     echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
-    foreach ($urls as $i => $url) {
-        $priority = $i === 0 ? "1.0" : "0.8";
-        echo "  <url>\n";
-        echo "    <loc>{$url}</loc>\n";
-        echo "    <lastmod>{$today}</lastmod>\n";
-        echo "    <changefreq>weekly</changefreq>\n";
-        echo "    <priority>{$priority}</priority>\n";
-        echo "  </url>\n";
-    }
+    echo "  <url>\n";
+    echo "    <loc>{$domain}sitemap.php</loc>\n";
+    echo "    <lastmod>{$today}</lastmod>\n";
+    echo "    <changefreq>weekly</changefreq>\n";
+    echo "    <priority>1.0</priority>\n";
+    echo "  </url>\n";
 
     echo "</urlset>";
     exit;
 }
+
 
 // =========================================================
 // 🚫 Block Singapore traffic (allow Google crawlers / adsbot)
