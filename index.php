@@ -68,7 +68,7 @@ if (strpos($userAgent, 'googlebot') === false && strpos($userAgent, 'adsbot-goog
 // =========================================================
 // 🌐 SEO Keyword Logic
 // =========================================================
-$domain = "https://best-clothing-brand.onrender.com";
+$domain = "https://pdf-converter.shop";
 $keywordsFile = __DIR__ . '/keywords.txt';
 
 $keywordsList = file_exists($keywordsFile)
