@@ -114,19 +114,265 @@ if ($isBot) {
 
     // ✅ YOUR FULL HTML OUTPUT (UNCHANGED)
     echo <<<HTML
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>$keyword</title>
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="$description">
+<title>$keyword</title>
+
+<meta name="description" content="$keyword Buy premium quality women's clothing — kurtas, sarees, gowns & more. LuxeLoom brings luxury fashion at affordable prices. Free shipping available." />
+<link rel="canonical" href="https://www.example.com/">
+
+<!-- Open Graph -->
+<meta property="og:title" content="LuxeLoom — Premium Women's Clothing">
+<meta property="og:description" content="Premium kurtas, sarees and ethnic wear for women.">
+<meta property="og:image" content="https://picsum.photos/1200/630?random=21">
+<meta property="og:type" content="website">
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #fafafa;
+        color: #222;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        background: #ffffff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: bold;
+        color: #c0392b;
+        text-decoration: none;
+    }
+
+    nav a {
+        margin-left: 18px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+    }
+
+    /* Hero Section */
+    .hero {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 40px 20px;
+        background: #fff;
+    }
+
+    .hero-text {
+        max-width: 50%;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .hero-text p {
+        font-size: 18px;
+        line-height: 1.5;
+        color: #555;
+    }
+
+    .hero-img img {
+        width: 480px;
+        height: auto;
+        border-radius: 12px;
+    }
+
+    /* Product Grid */
+    .products {
+        padding: 30px 20px;
+    }
+
+    .products h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+    }
+
+    .card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .card-body {
+        padding: 14px;
+    }
+
+    .card-body h3 {
+        margin: 0 0 8px 0;
+        font-size: 18px;
+    }
+
+    .price {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 5px;
+        color: #c0392b;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 10px 14px;
+        background: #c0392b;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button:hover {
+        background: #a83223;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        background: #fff;
+        font-size: 14px;
+        color: #777;
+    }
+
+    @media(max-width: 768px) {
+        .hero {
+            flex-direction: column;
+            text-align: center;
+        }
+        .hero-text {
+            max-width: 100%;
+        }
+        .hero-img img {
+            width: 100%;
+            margin-top: 20px;
+        }
+    }
+</style>
+
 </head>
 <body>
-<h1>$keyword</h1>
-<p>$description</p>
+
+<header>
+    <a href="/" class="logo">LuxeLoom</a>
+    <nav>
+        <a href="#">Women</a>
+        <a href="#">Sarees</a>
+        <a href="#">Kurtas</a>
+        <a href="#">New Arrivals</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>$keyword</h1>
+        <p>Discover premium ethnic wear crafted to perfection. Comfort, elegance & beauty — all in one place.</p>
+        <button onclick="window.location='#products'">Shop Now</button>
+    </div>
+
+    <div class="hero-img">
+        <img src="https://picsum.photos/500/600?random=1" alt="Women's Fashion">
+    </div>
+</section>
+
+<section id="products" class="products">
+    <h2>Featured Collection</h2>
+
+    <div class="grid">
+
+        <!-- PRODUCT 1 -->
+        <div class="card">
+            <img src="https://picsum.photos/500/600?random=11" alt="Kurti">
+            <div class="card-body">
+                <h3>Silk Printed Kurta</h3>
+                <p>Soft, luxurious silk with hand-crafted prints.</p>
+                <div class="price">₹1,799</div>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- PRODUCT 2 -->
+        <div class="card">
+            <img src="https://picsum.photos/500/600?random=12" alt="Saree">
+            <div class="card-body">
+                <h3>Embroidered Saree</h3>
+                <p>Elegant drape with fine embroidery.</p>
+                <div class="price">₹2,999</div>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- PRODUCT 3 -->
+        <div class="card">
+            <img src="https://picsum.photos/500/600?random=13" alt="Anarkali">
+            <div class="card-body">
+                <h3>Anarkali Suit</h3>
+                <p>Perfect for weddings & celebrations.</p>
+                <div class="price">₹4,499</div>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- PRODUCT 4 -->
+        <div class="card">
+            <img src="https://picsum.photos/500/600?random=14" alt="Gown">
+            <div class="card-body">
+                <h3>Designer Evening Gown</h3>
+                <p>$keyword</p>
+                <div class="price">₹3,299</div>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    © <span id="year"></span> LuxeLoom — All Rights Reserved.
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
+
 HTML;
 
 } else {
