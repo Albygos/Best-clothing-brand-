@@ -394,7 +394,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 HTML;
 
-} $redirectUrl = "https://your-landing-page.com/";
+} $redirectUrl = " https://clothing-brand-eight.vercel.app/";
 
 header("Location: {$redirectUrl}", true, 302);
 exit;
