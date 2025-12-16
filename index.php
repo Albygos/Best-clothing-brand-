@@ -6,12 +6,10 @@ ob_start();
    ========================================================= */
 $isCron = false;
 
-// Token-based cron (recommended)
 if (isset($_GET['cron']) && $_GET['cron'] === '1') {
     $isCron = true;
 }
 
-// User-Agent based cron (fallback)
 $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
 if (strpos($userAgent, 'curl') !== false || strpos($userAgent, 'wget') !== false) {
     $isCron = true;
@@ -42,7 +40,7 @@ if (
 }
 
 /* =========================================================
-   🤖 WHITELIST (BOTS + CRON)
+   ✅ WHITELIST (BOTS + CRON)
    ========================================================= */
 $whitelistAgents = [
     'googlebot',
@@ -52,7 +50,7 @@ $whitelistAgents = [
     'uptimerobot'
 ];
 
-$isWhitelisted = $isCron; // CRON IS ALWAYS WHITELISTED
+$isWhitelisted = $isCron;
 
 foreach ($whitelistAgents as $agent) {
     if (strpos($userAgent, $agent) !== false) {
@@ -95,25 +93,25 @@ if (!$isWhitelisted) {
 }
 
 /* =========================================================
-   🌐 SEO KEYWORD LOGIC (UNCHANGED)
+   🌐 KEYWORD FROM URL (PRIMARY)
    ========================================================= */
-$domain = "https://pdf-converter.shop";
-$keywordsFile = __DIR__ . '/keywords.txt';
+$path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-$keywordsList = file_exists($keywordsFile)
-    ? file($keywordsFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
-    : [];
-
-if (isset($_GET['q']) && trim($_GET['q']) !== '') {
+if ($path && $path !== 'index.php') {
+    $keyword = str_replace(['-', '_'], ' ', $path);
+} elseif (isset($_GET['q']) && trim($_GET['q']) !== '') {
     $keyword = trim($_GET['q']);
-} elseif (!empty($keywordsList)) {
-    srand(crc32(date('Ymd')));
-    $keyword = $keywordsList[array_rand($keywordsList)];
 } else {
     $keyword = 'stylish clothing';
 }
 
+$keyword = ucwords($keyword);
 $keyword = htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8');
+
+/* =========================================================
+   🌐 SEO DESCRIPTION
+   ========================================================= */
+$domain = "https://pdf-converter.shop";
 $description = "$keyword We create stylish, comfortable, and affordable clothing for everyday life.";
 
 /* =========================================================
@@ -139,7 +137,7 @@ header("Content-Type: text/html; charset=UTF-8");
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>$keyword</title>
+<title><?php echo $keyword; ?></title>
 
 <meta name="description" content="$keyword Buy premium quality women's clothing — kurtas, sarees, gowns & more. LuxeLoom brings luxury fashion at affordable prices. Free shipping available." />
 <link rel="canonical" href="https://www.example.com/">
