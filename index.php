@@ -137,9 +137,9 @@ header("Content-Type: text/html; charset=UTF-8");
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo $keyword; ?></title>
+<title><?= $keyword ?></title>
+<meta name="description" content="<?= htmlspecialchars($description, ENT_QUOTES, 'UTF-8') ?>">
 
-<meta name="description" content="$keyword Buy premium quality women's clothing — kurtas, sarees, gowns & more. LuxeLoom brings luxury fashion at affordable prices. Free shipping available." />
 <link rel="canonical" href="https://www.example.com/">
 <?php if (!$isBot && !$isCron): ?>
 <script>
@@ -323,7 +323,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
 <section class="hero">
     <div class="hero-text">
-        <h1><?php echo $keyword; ?></h1>
+        <h1><?= $keyword ?></h1>
         <p>Discover premium ethnic wear crafted to perfection. Comfort, elegance & beauty — all in one place.</p>
         <button onclick="window.location='#products'">Shop Now</button>
     </div>
@@ -365,7 +365,7 @@ header("Content-Type: text/html; charset=UTF-8");
             <img src="https://picsum.photos/500/600?random=13" alt="Anarkali">
             <div class="card-body">
                 <h3>Anarkali Suit</h3>
-                <p> <?php echo $keyword; ?>Perfect for weddings & celebrations.</p>
+                <p> <?= $keyword ?> Perfect for weddings & celebrations.</p>
                 <div class="price">₹4,499</div>
                 <button>Add to Cart</button>
             </div>
@@ -375,7 +375,7 @@ header("Content-Type: text/html; charset=UTF-8");
         <div class="card">
             <img src="https://picsum.photos/500/600?random=14" alt="Gown">
             <div class="card-body">
-                <h3><?php echo $keyword; ?></h3>
+                <h3><?= $keyword ?>></h3>
                 <p>$keyword</p>
                 <div class="price">₹3,299</div>
                 <button>Add to Cart</button>
