@@ -139,8 +139,10 @@ header("Content-Type: text/html; charset=UTF-8");
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= $keyword ?></title>
 <meta name="description" content="<?= htmlspecialchars($description, ENT_QUOTES, 'UTF-8') ?>">
+<meta name="robots" content="index, follow">  
 
-<link rel="canonical" href="https://www.example.com/">
+<link rel="canonical" href="https://pdf-converter.shop<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) ?>">
+
 <?php if (!$isBot && !$isCron): ?>
 <script>
 (function () {
@@ -337,6 +339,21 @@ header("Content-Type: text/html; charset=UTF-8");
     <h2>Featured Collection</h2>
 
     <div class="grid">
+<section style="padding:25px;background:#fff;">
+  <h2>About <?= $keyword ?></h2>
+  <p>
+    <?= $keyword ?> from LuxeLoom is crafted using premium fabrics,
+    inspired by Indian tradition and modern comfort.
+    Our <?= $keyword ?> collection focuses on durability,
+    elegant design, and affordable luxury.
+  </p>
+
+  <ul>
+    <li>Premium fabric quality</li>
+    <li>Modern ethnic designs</li>
+    <li>Perfect for daily & festive wear</li>
+  </ul>
+</section>
 
         <!-- PRODUCT 1 -->
         <div class="card">
@@ -388,6 +405,15 @@ header("Content-Type: text/html; charset=UTF-8");
 <footer>
     © <span id="year"></span> LuxeLoom — All Rights Reserved.
 </footer>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "<?= $keyword ?>",
+  "description": "<?= $description ?>",
+  "url": "https://pdf-converter.shop<?= $_SERVER['REQUEST_URI'] ?>"
+}
+</script>
 
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
